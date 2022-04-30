@@ -5,9 +5,11 @@
       <map>
         <entry key="..\:/Users/PREDATOR/AndroidStudioProjects/Notepad/app/src/main/res/layout/activity_list.xml" value="0.35874439461883406" />
         <entry key="..\:/Users/PREDATOR/AndroidStudioProjects/Notepad/app/src/main/res/layout/activity_main.xml" value="0.1824074074074074" />
+        <entry key="..\:/Users/PREDATOR/AndroidStudioProjects/Notepad/app/src/main/res/layout/activity_note.xml" value="0.25" />
         <entry key="..\:/Users/PREDATOR/AndroidStudioProjects/Notepad/app/src/main/res/layout/activity_settings.xml" value="0.25" />
         <entry key="..\:/Users/PREDATOR/AndroidStudioProjects/Notepad/app/src/main/res/layout/list_item.xml" value="0.536" />
         <entry key="..\:/Users/PREDATOR/AndroidStudioProjects/Notepad/app/src/main/res/menu/main_menu.xml" value="0.25" />
+        <entry key="..\:/Users/PREDATOR/AndroidStudioProjects/Notepad/app/src/main/res/menu/note_menu.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.28229166666666666" />
         <entry key="app/src/main/res/menu/main_menu.xml" value="0.28229166666666666" />
       </map>

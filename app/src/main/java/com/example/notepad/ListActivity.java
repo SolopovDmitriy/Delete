@@ -1,7 +1,10 @@
 package com.example.notepad;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,18 +21,18 @@ import java.util.List;
 public class ListActivity extends AppCompatActivity {
 
     private Cursor cursor;
+    private ActivityResultLauncher<Intent> resultLauncher;
+    private List<Note> notes;
 
-//    private void updateListView(){
-//
-//    }
-//
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
         DBManager dbManager = new DBManager(this);
-        List<Note> notes = Arrays.asList(
+        notes = Arrays.asList(
                 new Note(0, "Tank", LocalDateTime.now(), "Tiger - Panzerkampfwagen VI Ausf.H - E, «Тигр» — немецкий тяжёлый танк времён Второй мировой войны, прототипом которого являлся танк VK4501, разработанный в 1942 году фирмой «Хеншель»."),
                 new Note(0, "Airplane", LocalDateTime.now(), "Истреби́тель — военный самолёт, предназначенный в первую очередь для уничтожения воздушных целей противника."),
                 new Note(0, "Submarine", LocalDateTime.now(), "Подво́дная ло́дка — класс кораблей, способных погружаться и длительное время действовать в подводном положении. ")
@@ -63,11 +66,50 @@ public class ListActivity extends AppCompatActivity {
         );
         listView.setAdapter(cursorAdapter);
 
+
+
+        resultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    Log.e("FF", " " + result);
+                    if(result.getResultCode() == RESULT_OK){
+                        Intent data = result.getData();
+                        Note note = (Note) data.getSerializableExtra("note");
+                        System.out.println("RESULT_OK");
+                        int index = data.getIntExtra("index", -1);
+                        if(note != null && index > -1){
+                            dbManager.save(note);
+                            notes.set(index, note);
+                            System.out.println("note save " + note.getText());
+                        }
+                    }
+                    else if(result.getResultCode() == RESULT_CANCELED){
+
+                    }
+                }
+        );
+
+
+
+
         listView.setOnItemClickListener((adapterView, view, i, id) -> {
-            System.out.println("id = " + id);
-            dbManager.deleteByID((int)id);
-            cursor = dbManager.findAllToCursor();
-            cursorAdapter.changeCursor(cursor);
+            Intent intent = new Intent(ListActivity.this, NoteActivity.class);
+//            intent.putExtra("note_ID", (int)id);
+            Note note = dbManager.findByID((int)id);
+            intent.putExtra("note", note);
+            intent.putExtra("index", i);
+
+//            startActivity(intent);
+//            finish();
+            resultLauncher.launch(intent);
+
+            // delete item
+//            System.out.println("id = " + id);
+//            dbManager.deleteByID((int)id);
+//            cursor = dbManager.findAllToCursor();
+//            cursorAdapter.changeCursor(cursor);
+            // end delete item
+
         });
 
         Button deleteAllButton = findViewById(R.id.deleteAllButton);
@@ -79,4 +121,5 @@ public class ListActivity extends AppCompatActivity {
         });
 
     }
+
 }

@@ -1,8 +1,9 @@
 package com.example.notepad;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Note {
+public class Note implements Serializable {
     private int id;
     private String header;
     private LocalDateTime time;
